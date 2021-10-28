@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "value": "test-vnet-ne"
+        },
+        "vnetAddressPrefix": {
+            "value": "10.55.0.0/16"
+        },
+        "subnet1Prefix": {
+            "value": "10.55.0.0/24"
+        },
+        "subnet1Name": {
+            "value": "servers-sub"
+        },
+        "subnet2Prefix": {
+            "value": "10.55.1.0/24"
+        },
+        "subnet2Name": {
+            "value": "apps-sub"
+        },
+        "subnet3Name": {
+            "value": "AzureBastionSubnet"
+        },
+        "subnet3Prefix": {
+            "value": "10.55.100.0/24"
+        },
+        "location": {
+            "value": "northeurope"
+        } 
+    }
+}

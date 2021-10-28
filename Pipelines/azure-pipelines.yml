@@ -1,0 +1,81 @@
+# Pipeline validates ARM template, runs a what-if
+# If that passes, enters deploy stage
+
+trigger:
+  paths:
+    include:
+    - virtualNetworks
+
+stages:
+  - stage: Test
+    jobs:
+      - job: 'testARM'
+        pool:
+          vmimage: windows-latest
+        steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: 'Your SC'
+              subscriptionId: 'XXXXXXXXXXXXXXXXXXXXXXXXX'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'rg_staging'
+              location: 'North Europe'
+              templateLocation: 'Linked artifact'
+              csmFile: 'virtualNetworks/vnet-ne.json'
+              csmParametersFile: 'virtualNetworks/vnet-ne.parameters.json'
+              deploymentMode: 'Validation'
+              deploymentName: 'ARM-Validation'
+
+          - task: RunARMTTKTests@1
+            inputs:
+              templatelocation: '$(System.DefaultWorkingDirectory)\virtualNetworks'
+              resultLocation: '$(System.DefaultWorkingDirectory)\testResults'
+              allTemplatesMain: true
+          
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'NUnit'
+              testResultsFiles: '$(System.DefaultWorkingDirectory)\testResults\*-armttk.xml'
+            condition: always()
+        
+      - job: 'validateARM'
+        pool:
+          vmimage: windows-latest
+        steps:
+          - task: AzurePowerShell@5
+            inputs:
+              azureSubscription: 'Your SSSSSSSSSSSSSSSSSSSSC'
+              ScriptType: 'InlineScript'
+              Inline: |
+                $Parameters = @{
+                  ResourcegroupName     = "rg_iac"
+                  Templatefile          = ".\virtualNetworks\vnet-ne.json"
+                  TemplateParameterfile = ".\virtualNetworks\vnet-ne.parameters.json"
+                  Mode                  = 'Incremental'
+                 }
+                $Result = Get-AzResourceGroupDeploymentWhatIfResult @Parameters
+                $Result
+              azurePowerShellVersion: 'LatestVersion'
+
+  - stage: Deploy
+    dependsOn: Test
+    jobs:
+      - job: "deployARM"
+        pool:
+          vmimage: windows-latest
+        steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: 'Your SC'
+              subscriptionId: 'XXXXXXXXXXXXXXXXXXXXXXXXX'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'rg_iac'
+              location: 'North Europe'
+              templateLocation: 'Linked artifact'
+              csmFile: 'virtualNetworks/vnet-ne.json'
+              csmParametersFile: 'virtualNetworks/vnet-ne.parameters.json'
+              deploymentMode: 'Incremental'
+              deploymentName: 'vnet-deploy-ado'
+        

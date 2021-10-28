@@ -1,0 +1,40 @@
+# Pipeline validates Bicep template with test kit
+# If that passes, enters deploy stage
+
+trigger:
+  paths:
+    include:
+    - Bicep
+
+pool:
+  vmImage: windows-latest
+
+stages:
+  - stage: Test
+    jobs:
+      - job: 'testBicep'
+        steps:
+          - task: RunARMTTKTests@1
+            inputs:
+              templatelocation: '$(System.DefaultWorkingDirectory)\Bicep'
+              resultLocation: '$(System.DefaultWorkingDirectory)\BtestResults'
+              allTemplatesMain: true
+          
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'NUnit'
+              testResultsFiles: '$(System.DefaultWorkingDirectory)\BtestResults\*-armttk.xml'
+              condition: always()
+
+  - stage: Deploy
+    dependsOn: Test
+    jobs:
+      - job: "deployBicep"
+        steps:
+          - task: AzurePowerShell@5
+            inputs:
+              azureSubscription: 'Your SC'
+              ScriptType: 'InlineScript'
+              Inline: 'New-AzResourceGroupDeployment -Name BicepDeployment -ResourceGroupName rg_iac -TemplateFile ".\Bicep\main.bicep" -TemplateParameterFile ".\Bicep\main.parameters.json"'
+              FailOnStandardError: true
+              azurePowerShellVersion: 'LatestVersion' 
