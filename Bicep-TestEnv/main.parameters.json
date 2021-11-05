@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetNameFile": {
+            "value": "test-vnet-ne"
+        },
+        "vnetAddressPrefixFile": {
+            "value": "10.55.0.0/16"
+        },
+        "locationFile":{
+            "value": "northeurope"
+        },
+        "emailFile":{
+            "value": "joe@wedoazure.com"
+        },
+        "vmNameFile": {
+            "value": "test-vm-ne"
+        },
+        "vmAdmFile": {
+            "value": "wdaadmin"
+        },
+        "vmPassFile": {
+            "value": "H1bern1a!2021"
+        },
+        "vmSizeFile": {
+            "value": "Standard_D2s_v3"
+        },
+        "monNameFile": {
+            "value": "wdamonsec"
+        },
+        "deployVNGFile": {
+            "value": false
+        },
+        "afwSKUFile": {
+            "value": "Standard"
+        }
+
+    }
+}
