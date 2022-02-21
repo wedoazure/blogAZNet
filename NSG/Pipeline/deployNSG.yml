@@ -36,7 +36,7 @@ stages:
         steps:
           - task: AzurePowerShell@5
             inputs:
-              azureSubscription: 'Microsoft Azure Sponsorship(250d49e3-87b6-436c-a750-d4e29311dfbe)'
+              azureSubscription: YOUR SC HERE
               ScriptType: 'InlineScript'
               Inline: 'New-AzResourceGroupDeployment -Name BicepNSGDeployment -ResourceGroupName rg_nsg_bicep -TemplateFile ".\NSG\main.bicep" -TemplateParameterFile ".\NSG\main.parameters.json"'
               FailOnStandardError: true
