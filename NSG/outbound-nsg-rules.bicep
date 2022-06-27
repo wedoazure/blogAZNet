@@ -21,12 +21,27 @@ resource nsgRule3000 'Microsoft.Network/networkSecurityGroups/securityRules@2021
   name: '${nsgName}/OUT_Ping_ALLOW'
   properties: {
     access: 'Allow'
-    description: 'Allow PING from VNET'
+    description: 'Allow PING to VNET'
     destinationAddressPrefix: 'VirtualNetwork'
     destinationPortRange: '*'
     direction: dir
     priority: 3000
     protocol: 'Icmp'
+    sourceAddressPrefix: 'VirtualNetwork'
+    sourcePortRange: '*'
+  }
+}
+
+resource nsgRule100 'Microsoft.Network/networkSecurityGroups/securityRules@2021-05-01' = {
+  name: '${nsgName}/OUT_RDP_ALLOW'
+  properties: {
+    access: 'Allow'
+    description: 'Allow RDP to VNET'
+    destinationAddressPrefix: 'VirtualNetwork'
+    destinationPortRange: '3389'
+    direction: dir
+    priority: 100
+    protocol: 'Tcp'
     sourceAddressPrefix: 'VirtualNetwork'
     sourcePortRange: '*'
   }

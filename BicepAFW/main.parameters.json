@@ -14,26 +14,23 @@
         "emailFile":{
             "value": "joeWDA"
         },
-        "vmNameFile": {
-            "value": "test-vm-ne"
+        "monNameFile": {
+            "value": "wdamonsec3"
         },
-        "vmAdmFile": {
-            "value": "wdaadmin"
+        "afwSKUFile": {
+            "value": "Premium"
         },
         "vmPassFile": {
             "value": "TerriblePassword01"
         },
+        "vmAdmFile": {
+            "value": "wdaadmin"
+        },
         "vmSizeFile": {
             "value": "Standard_D2s_v3"
         },
-        "monNameFile": {
-            "value": "wdamonsec"
-        },
-        "deployVNGFile": {
-            "value": false
-        },
-        "afwSKUFile": {
-            "value": "Standard"
+        "vmNameFile": {
+            "value": "test-vm-ne"
         }
 
     }

@@ -4,7 +4,8 @@
 trigger:
   paths:
     include:
-    - BicepEnv
+    - BicepAFW
+    - BicepAFW\Modules
 
 pool:
   vmImage: windows-latest
@@ -16,7 +17,7 @@ stages:
         steps:
           - task: RunARMTTKTests@1
             inputs:
-              templatelocation: '$(System.DefaultWorkingDirectory)\BicepEnv'
+              templatelocation: '$(System.DefaultWorkingDirectory)\BicepAFW'
               resultLocation: '$(System.DefaultWorkingDirectory)\BtestResults'
               allTemplatesMain: true
           
@@ -36,6 +37,6 @@ stages:
             inputs:
               azureSubscription: 'YOUR SUB'
               ScriptType: 'InlineScript'
-              Inline: 'New-AzResourceGroupDeployment -Name BicepEnvDeployment -ResourceGroupName rg_bicepenv -TemplateFile ".\BicepEnv\main.bicep" -TemplateParameterFile ".\BicepEnv\main.parameters.json"'
+              Inline: 'New-AzResourceGroupDeployment -Name BicepAFWDeployment -ResourceGroupName rg_bicepafw -TemplateFile ".\BicepAFW\main.bicep" -TemplateParameterFile ".\BicepAFW\main.parameters.json"'
               FailOnStandardError: true
               azurePowerShellVersion: 'LatestVersion'
