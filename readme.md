@@ -1,7 +1,5 @@
 ![alt text][logo]
 
-[![Build Status](https://dev.azure.com/wedoazure/AZNet/_apis/build/status/wedoazure.AZNet?branchName=main)](https://dev.azure.com/wedoazure/AZNet/_build/latest?definitionId=7&branchName=main)
-
 # AZNet repository
 This repo contains AZNet related content, from ARM templates to Bicep to YAML. I will try to keep things organised! Most folders will be part of a blog post, or some sort of test.
 
