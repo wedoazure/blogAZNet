@@ -97,3 +97,5 @@ resource w10VM 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     }
   }
 }
+
+output username string = vmAdm
